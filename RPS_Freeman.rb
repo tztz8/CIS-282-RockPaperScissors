@@ -15,13 +15,17 @@ $debug = false
 $game_weapon = ["Rock", "Paper", "Scissors"]
 # Who wins - 1 for player 1, 2 for player 2, 0 for nether
 def who_win(player_1_weapon,player_2_weapon)
-  if((player_1_weapon == 1 && player_2_weapon == 3) ||
-      (player_1_weapon == 2 && player_2_weapon == 1) ||
-      (player_1_weapon == 3 && player_2_weapon == 2))
+  if ((player_1_weapon == 1 && (player_2_weapon == 3 || player_2_weapon == 4)) ||
+      (player_1_weapon == 2 && (player_2_weapon == 1 || player_2_weapon == 5)) ||
+      (player_1_weapon == 3 && (player_2_weapon == 2 || player_2_weapon == 4)) ||
+      (player_1_weapon == 4 && (player_2_weapon == 5 || player_2_weapon == 2)) ||
+      (player_1_weapon == 5 && (player_2_weapon == 3 || player_2_weapon == 1)))
     return 1
-  elsif((player_2_weapon == 1 && player_1_weapon == 3) ||
-      (player_2_weapon == 2 && player_1_weapon == 1) ||
-      (player_2_weapon == 3 && player_1_weapon == 2))
+  elsif((player_2_weapon == 1 && (player_1_weapon == 3 || player_1_weapon == 4)) ||
+        (player_2_weapon == 2 && (player_1_weapon == 1 || player_1_weapon == 5)) ||
+        (player_2_weapon == 3 && (player_1_weapon == 2 || player_1_weapon == 4)) ||
+        (player_2_weapon == 4 && (player_1_weapon == 5 || player_1_weapon == 2)) ||
+        (player_2_weapon == 5 && (player_1_weapon == 3 || player_1_weapon == 1)))
     return 2
   else
     return 0
@@ -48,9 +52,13 @@ def menu(options,with_exit)
     print "Enter a opinion: "
     input = gets.chomp.to_i
     # check if input is valid
-    if (!(input <= options.length+2) && !(input > 0))
-      puts "Your input is not a opinion available"
-      input_work = false
+    if (!((input <= options.length) && (input > 0)))
+      if (with_exit && input <= options.length+2)
+        input_work = true
+      else
+        puts "Your input is not a opinion available"
+        input_work = false
+      end
     else
       input_work = true
     end
@@ -79,6 +87,7 @@ while run_program
   # Start Menu
   start_menu = [
       "Start the game",
+      "Toggle \"Sheldon Rock Paper Scissors\" game",
       "Explain how the game works"
       ]
   # Launch menu
@@ -159,8 +168,18 @@ while run_program
         end
       end
     end
-  # Option 2
   elsif (user_start_menu_input == 2)
+    if ($game_weapon.length == 3)
+      $game_weapon = ["Rock","Paper","Scissors","Lizard","Spock"]
+      puts "Sheldon game on"
+    elsif ($game_weapon == 5)
+      $game_weapon = ["Rock","Paper","Scissors"]
+      puts "Sheldon game off"
+    end
+    print "press enter to continue"
+    gets
+  # Option 2
+  elsif (user_start_menu_input == 3)
     puts "Each player are able to pick from Rock, Paper, or Scissors"
     print "press enter to continue"
     gets
@@ -170,6 +189,23 @@ while run_program
     puts "* Scissors beats paper *"
     puts "* Paper beats Rock     *"
     puts "************************"
+    user_info_menu_input = menu(["Learn about Sheldon Rock, Paper, Scissors"],true)
+    if (user_info_menu_input == 1)
+      puts "*******************************"
+      puts "* Scissors cuts paper         *"
+      puts "* Paper covers rock           *"
+      puts "* Rock crushes lizard         *"
+      puts "* Lizard poisons Spock        *"
+      puts "* Spock smashes scissors      *"
+      puts "* Scissors decapitates lizard *"
+      puts "* Lizard eats paper           *"
+      puts "* Paper disproves Spock       *"
+      puts "* Spock vaporizes Rock        *"
+      puts "* Rock crushes scissors       *"
+      puts "*******************************"
+      print "press enter to continue"
+      gets
+    end
   else
     run_program = false
   end
