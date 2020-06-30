@@ -15,13 +15,17 @@ $debug = false
 $game_weapon = ["Rock", "Paper", "Scissors"]
 # Who wins - 1 for player 1, 2 for player 2, 0 for nether
 def who_win(player_1_weapon,player_2_weapon)
-  if ((player_1_weapon == 1 && player_2_weapon == 3) ||
-      (player_1_weapon == 2 && player_2_weapon == 1) ||
-      (player_1_weapon == 3 && player_2_weapon == 2))
+  if ((player_1_weapon == 1 && (player_2_weapon == 3 || player_2_weapon == 4)) ||
+      (player_1_weapon == 2 && (player_2_weapon == 1 || player_2_weapon == 5)) ||
+      (player_1_weapon == 3 && (player_2_weapon == 2 || player_2_weapon == 4)) ||
+      (player_1_weapon == 4 && (player_2_weapon == 5 || player_2_weapon == 2)) ||
+      (player_1_weapon == 5 && (player_2_weapon == 3 || player_2_weapon == 1)))
     return 1
-  elsif((player_2_weapon == 1 && player_1_weapon == 3) ||
-        (player_2_weapon == 2 && player_1_weapon == 1) ||
-        (player_2_weapon == 3 && player_1_weapon == 2))
+  elsif((player_2_weapon == 1 && (player_1_weapon == 3 || player_1_weapon == 4)) ||
+        (player_2_weapon == 2 && (player_1_weapon == 1 || player_1_weapon == 5)) ||
+        (player_2_weapon == 3 && (player_1_weapon == 2 || player_1_weapon == 4)) ||
+        (player_2_weapon == 4 && (player_1_weapon == 5 || player_1_weapon == 2)) ||
+        (player_2_weapon == 5 && (player_1_weapon == 3 || player_1_weapon == 1)))
     return 2
   else
     return 0
@@ -83,6 +87,7 @@ while run_program
   # Start Menu
   start_menu = [
       "Start the game",
+      "Toggle \"Sheldon Rock Paper Scissors\" game",
       "Explain how the game works"
       ]
   # Launch menu
@@ -190,6 +195,19 @@ while run_program
     end
   # Option 2
   elsif (user_start_menu_input == 2)
+    # if using R.P.S.
+    if ($game_weapon.length == 3)
+      $game_weapon = ["Rock","Paper","Scissors","Lizard","Spock"]
+      puts "Sheldon game on"
+    # if using Sheldon R.P.S.
+    elsif ($game_weapon == 5)
+      $game_weapon = ["Rock","Paper","Scissors"]
+      puts "Sheldon game off"
+    end
+    print "press enter to continue"
+    gets
+  # Option 3
+  elsif (user_start_menu_input == 3)
     puts "Each player are able to pick from Rock, Paper, or Scissors"
     print "press enter to continue"
     gets
@@ -199,8 +217,23 @@ while run_program
     puts "* Scissors beats paper *"
     puts "* Paper beats Rock     *"
     puts "************************"
-    print "press enter to continue"
-    gets
+    user_info_menu_input = menu(["Learn about Sheldon Rock, Paper, Scissors"],true)
+    if (user_info_menu_input == 1)
+      puts "*******************************"
+      puts "* Scissors cuts paper         *"
+      puts "* Paper covers rock           *"
+      puts "* Rock crushes lizard         *"
+      puts "* Lizard poisons Spock        *"
+      puts "* Spock smashes scissors      *"
+      puts "* Scissors decapitates lizard *"
+      puts "* Lizard eats paper           *"
+      puts "* Paper disproves Spock       *"
+      puts "* Spock vaporizes Rock        *"
+      puts "* Rock crushes scissors       *"
+      puts "*******************************"
+      print "press enter to continue"
+      gets
+    end
   else
     run_program = false
   end
